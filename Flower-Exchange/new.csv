@@ -1,0 +1,9 @@
+﻿Cl. Ord. ID,Instrument,Side,Quantity,Price
+o1,Rose,2,100,100
+o2,Rose,2,90,100
+o3,Rose,2,90,100
+o4,Orchid,1,200,100
+o5,Rose,2,80,100
+o6,Rose,2,100,200
+o7,Rose,1,120,500
+o8,Rose,1,120,300
