@@ -96,10 +96,10 @@ public:
         {
             // If the other side is empty, add the order to the book directly
             book.AddToBook(SideToAdd, flower);
-            report.Status = 0; // New
-            report.Quantity = flower.getQuantity();
-            report.Price = flower.getPrice();
-            report.TransactionTime = getCurrentTransactionTime();
+            report.setStatus(0); // New
+            report.setQuantity(flower.getQuantity());
+            report.setPrice(flower.getPrice());
+            report.setTransactionTime(getCurrentTransactionTime());
             reports.push_back(report);
             return;
         }
@@ -114,7 +114,7 @@ public:
                           // Retrieve timestamps for a and b using OrderID
                           if (a.getPrice() != b.getPrice())
                               return a.getPrice() < b.getPrice();
-                          return aReport.TransactionTime < bReport.TransactionTime;
+                          return aReport.getTransactionTime() < bReport.getTransactionTime();
                       });
         }
         else
@@ -126,8 +126,8 @@ public:
                           // Retrieve timestamps for a and b using OrderID
 
                           if (a.getPrice() != b.getPrice())
-                              return a.getPrice() > b.getPrice();                   // Prioritize higher prices for sells
-                          return aReport.TransactionTime < bReport.TransactionTime; // Break ties with timestamp
+                              return a.getPrice() > b.getPrice();                             // Prioritize higher prices for sells
+                          return aReport.getTransactionTime() < bReport.getTransactionTime(); // Break ties with timestamp
                       });
         }
 
@@ -146,15 +146,15 @@ public:
             if (OtherSide[j].getQuantity() >= flower.getQuantity())
             {
                 // If the order can be completly filled, generate execution reports without adding to the book
-                report.Price = OtherSide[j].getPrice();
-                report.Quantity = flower.getQuantity();
-                report.Status = 2; // fill
-                report.TransactionTime = getCurrentTransactionTime();
+                report.setPrice(OtherSide[j].getPrice());
+                report.setQuantity(flower.getQuantity());
+                report.setStatus(2); // fill
+                report.setTransactionTime(getCurrentTransactionTime());
                 reports.push_back(report);
                 ExecutionReport updated;
                 for (int k = reports.size() - 1; k >= 0; k--)
                 {
-                    if (reports[k].OrderID == OtherSide[j].getOrderId())
+                    if (reports[k].getOrderId() == OtherSide[j].getOrderId())
                     {
                         updated = reports[k];
                         break;
@@ -162,11 +162,11 @@ public:
                 }
 
                 // update the status of the filled or partially filled order in the book
-                updated.Status = (OtherSide[j].getQuantity() == flower.getQuantity()) ? 2 : 3;
+                updated.setStatus((OtherSide[j].getQuantity() == flower.getQuantity()) ? 2 : 3);
                 int temp = OtherSide[j].getQuantity();
-                updated.Quantity = flower.getQuantity();
-                updated.Price = OtherSide[j].getPrice();
-                updated.TransactionTime = getCurrentTransactionTime();
+                updated.setQuantity(flower.getQuantity());
+                updated.setPrice(OtherSide[j].getPrice());
+                updated.setTransactionTime(getCurrentTransactionTime());
                 reports.push_back(updated);
                 if (temp - flower.getQuantity() == 0)
                 {
@@ -182,23 +182,23 @@ public:
             }
 
             // If the order is partially filled, calculate the remaining order to be entered to the book and generate execution reports
-            report.Price = OtherSide[j].getPrice();
-            report.Quantity = OtherSide[j].getQuantity();
-            report.Status = 3; // partially filled
-            report.TransactionTime = getCurrentTransactionTime();
+            report.setPrice(OtherSide[j].getPrice());
+            report.setQuantity(OtherSide[j].getQuantity());
+            report.setStatus(3); // partially filled
+            report.setTransactionTime(getCurrentTransactionTime());
             reports.push_back(report);
             ExecutionReport updated;
             for (int k = reports.size() - 1; k >= 0; k--)
             {
-                if (reports[k].OrderID == OtherSide[j].getOrderId())
+                if (reports[k].getOrderId() == OtherSide[j].getOrderId())
                 {
                     updated = reports[k];
                     break;
                 }
             };
             // update the status of the completly filled  order in the book
-            updated.Status = 2;
-            updated.TransactionTime = getCurrentTransactionTime();
+            updated.setStatus(2);
+            updated.setTransactionTime(getCurrentTransactionTime());
             reports.push_back(updated);
             // update the quantity of the partially filled order
             flower.setQuantity(flower.getQuantity() - OtherSide[j].getQuantity());
@@ -208,10 +208,10 @@ public:
         if (filled == false)
         {
             // If the order cannot be filled, add the order to the book directly
-            report.Status = 0; // New
-            report.Quantity = flower.getQuantity();
-            report.Price = flower.getPrice();
-            report.TransactionTime = getCurrentTransactionTime();
+            report.setStatus(0); // New
+            report.setQuantity(flower.getQuantity());
+            report.setPrice(flower.getPrice());
+            report.setTransactionTime(getCurrentTransactionTime());
             reports.push_back(report);
         }
         if (flower.getQuantity() > 0)

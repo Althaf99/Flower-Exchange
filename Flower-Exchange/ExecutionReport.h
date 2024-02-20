@@ -12,15 +12,105 @@ class ExecutionReport
 {
 
 public:
-    string ClientOderID;
-    string OrderID;
-    string Instrument;
-    int Side;
-    double Price;
-    int Quantity;
-    int Status;
-    string Reason;
-    string TransactionTime;
+    string clientOrderId;
+    string orderId;
+    string instrument;
+    int side;
+    double price;
+    int quantity;
+    int status;
+    string reason;
+    string transactionTime;
+
+    void setClientOrderId(string clientOrderId)
+    {
+        this->clientOrderId = clientOrderId;
+    }
+
+    void setOrderId(string orderId)
+    {
+        this->orderId = orderId;
+    }
+
+    void setInstrument(string instrument)
+    {
+        this->instrument = instrument;
+    }
+
+    void setReason(string reason)
+    {
+        this->reason = reason;
+    }
+
+    void setTransactionTime(string transactionTime)
+    {
+        this->transactionTime = transactionTime;
+    }
+
+    void setSide(int side)
+    {
+        this->side = side;
+    }
+
+    void setQuantity(int quantity)
+    {
+        this->quantity = quantity;
+    }
+
+    void setStatus(int status)
+    {
+        this->status = status;
+    }
+
+    void setPrice(double price)
+    {
+        this->price = price;
+    }
+
+    string getClientOrderId()
+    {
+        return clientOrderId;
+    }
+
+    string getOrderId()
+    {
+        return orderId;
+    }
+
+    string getInstrument()
+    {
+        return instrument;
+    }
+
+    int getSide()
+    {
+        return side;
+    }
+
+    double getPrice()
+    {
+        return price;
+    }
+
+    int getQuantity()
+    {
+        return quantity;
+    }
+
+    int getStatus()
+    {
+        return status;
+    }
+
+    string getReason()
+    {
+        return reason;
+    }
+
+    string getTransactionTime()
+    {
+        return transactionTime;
+    }
 
     void Output(const vector<ExecutionReport> &reports, const string &filename)
     {
@@ -38,15 +128,15 @@ public:
         // Write each ExecutionReport to the file as a new line in CSV format
         for (const auto &report : reports)
         {
-            file << report.OrderID << ","
-                 << report.ClientOderID << ","
-                 << report.Instrument << ","
-                 << report.Side << ","
-                 << report.Status << ","
-                 << report.Quantity << ","
-                 << std::fixed << std::setprecision(2) << report.Price << ","
-                 << report.Reason << ","
-                 << report.TransactionTime << std::endl;
+            file << report.orderId << ","
+                 << report.clientOrderId << ","
+                 << report.instrument << ","
+                 << report.side << ","
+                 << report.status << ","
+                 << report.quantity << ","
+                 << std::fixed << std::setprecision(2) << report.price << ","
+                 << report.reason << ","
+                 << report.transactionTime << std::endl;
         }
 
         file.close();

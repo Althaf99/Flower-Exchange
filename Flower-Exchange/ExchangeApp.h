@@ -34,18 +34,18 @@ void ExchangeApp(vector<Order> &orders, vector<ExecutionReport> &reports)
   {
     orderid++;
     ExecutionReport report;
-    report.OrderID = "ord" + to_string(orderid);
-    report.ClientOderID = orders[i].ClientOderID;
-    report.Instrument = orders[i].Instrument;
-    report.Side = orders[i].Side;
+    report.setOrderId("ord" + to_string(orderid));
+    report.setClientOrderId(orders[i].ClientOderID);
+    report.setInstrument(orders[i].Instrument);
+    report.setSide(orders[i].Side);
 
     // Check for invalid orders
-    if (orders[i].Price <= 0 || report.ClientOderID.size() > 5 ||
-        (report.Side != 1 && report.Side != 2) ||
+    if (orders[i].Price <= 0 || report.getClientOrderId().size() > 5 ||
+        (report.getSide() != 1 && report.getSide() != 2) ||
         orders[i].Quantity < 0 ||
         orders[i].Quantity > 1000 ||
         orders[i].Quantity % 10 != 0 ||
-        !isValidInstrument(report.Instrument))
+        !isValidInstrument(report.getInstrument()))
     {
 
       // Handle invalid order
@@ -54,15 +54,15 @@ void ExchangeApp(vector<Order> &orders, vector<ExecutionReport> &reports)
       {
         reason = "Invalid price";
       }
-      else if (report.ClientOderID.size() > 5)
+      else if (report.getClientOrderId().size() > 5)
       {
         reason = "Invalid ID";
       }
-      else if (report.Side != 1 && report.Side != 2)
+      else if (report.getSide() != 1 && report.getSide() != 2)
       {
         reason = "Invalid side";
       }
-      else if (!isValidInstrument(report.Instrument))
+      else if (!isValidInstrument(report.getInstrument()))
       {
         reason = "Invalid instrument"; // Specific reason for invalid instrument
       }
@@ -71,11 +71,11 @@ void ExchangeApp(vector<Order> &orders, vector<ExecutionReport> &reports)
         reason = "Invalid size";
       }
 
-      report.Price = orders[i].Price;
-      report.Quantity = orders[i].Quantity;
-      report.Status = 1; // Reject
-      report.Reason = reason;
-      report.TransactionTime = getCurrentTransactionTime();
+      report.setPrice(orders[i].Price);
+      report.setQuantity(orders[i].Quantity);
+      report.setStatus(1); // Reject
+      report.setReason(reason);
+      report.setTransactionTime(getCurrentTransactionTime());
       reports.push_back(report);
       continue; // Skip to the next order
     }
@@ -83,15 +83,15 @@ void ExchangeApp(vector<Order> &orders, vector<ExecutionReport> &reports)
     else
     {
       // Execute valid orders
-      Book flower(report.OrderID, orders[i].Quantity, orders[i].Price);
+      Book flower(report.getOrderId(), orders[i].Quantity, orders[i].Price);
 
-      string flowertype = report.Instrument;
+      string flowertype = report.getInstrument();
 
       // Access or create the appropriate order books using the map
       vector<Book> &buyBook = buyBooks[flowertype];
       vector<Book> &sellBook = sellBooks[flowertype];
 
-      if (report.Side == 1)
+      if (report.getSide() == 1)
       {
         book.MakeBook(1, report, reports, flower, buyBook, sellBook);
       }
