@@ -10,8 +10,7 @@ using namespace std;
 // Execution Report structure
 class ExecutionReport
 {
-
-public:
+private:
     string clientOrderId;
     string orderId;
     string instrument;
@@ -22,6 +21,7 @@ public:
     string reason;
     string transactionTime;
 
+public:
     void setClientOrderId(string clientOrderId)
     {
         this->clientOrderId = clientOrderId;
